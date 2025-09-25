@@ -6,6 +6,11 @@ import { ThemeProvider } from './provider';
 export const metadata={
    title:"Promptmania",
    description:"Discover and Share AI prompts",
+   icons: {
+    icon: '/assets/images/favicon-16x16.png', // path to your favicon
+    shortcut: '/assets/images/favicon-16x16.png', // optional shortcut icon
+    apple: '/assets/images/apple-touch-icon.png', // optional for iOS devices
+  },
 }
 const RootLayout = ({children}) => {
   return (
