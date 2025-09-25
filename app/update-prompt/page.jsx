@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 
 
 import Form from "@components/Form";
+export const dynamic = "force-dynamic";
 
 const UpdatePrompt = () => {
   const router = useRouter();
