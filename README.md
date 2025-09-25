@@ -1,5 +1,12 @@
 
- <h1>🧠 PromptMania</h1>
+<h1>
+  <img 
+    src="https://res.cloudinary.com/ddcdrrav8/image/upload/v1758786565/Screenshot_2025-09-25_131603-Picsart-AiImageEnhancer_w6gdy8.png" 
+    alt="🧠 PromptMania" 
+    width="280"
+  >
+</h1>
+
 
   <p>
     <strong>PromptMania</strong> is a full-stack web platform where users can post, store, and explore powerful 
@@ -10,7 +17,8 @@
 
   <h2>🚀 Features</h2>
   <ul>
-    <li>📌 Post and save ChatGPT prompts for future reuse</li>
+    <li>📌 Post and save ChatGPT,Gemini,Perplexity,Grok prompts for future reuse</li>
+ <li>💡 Get prompts to generate videos, photos, and other desired results for social media posts or project work, powered by a large collection of prompts.</li>
     <li>🔍 Full-text search by <strong>tag, keyword, or author</strong></li>
     <li>✂️ One-click copy for any prompt</li>
     <li>👤 Personal profile page showing user's posts</li>
