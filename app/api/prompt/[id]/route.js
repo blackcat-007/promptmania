@@ -1,6 +1,6 @@
 import Prompt from "@models/prompt";
 import { connectToDB } from "@utils/database";
-
+import mongoose from "mongoose";
 export const GET = async (request, { params }) => {
     try {
         await connectToDB()
@@ -40,15 +40,25 @@ export const PATCH = async (request, { params }) => {
     }
 };
 
-export const DELETE = async (request,{ params }) => {
-    try {
-        await connectToDB();
+export const DELETE = async (request, { params }) => {
+  try {
+    await connectToDB();
 
-        // Find the prompt by ID and remove it
-        await Prompt.findByIdAndRemove(params.id);
-
-        return new Response("Prompt deleted successfully", { status: 200 });
-    } catch (error) {
-        return new Response("Error deleting prompt", { status: 500 });
+    // Validate MongoDB ObjectId
+    if (!mongoose.Types.ObjectId.isValid(params.id)) {
+      return new Response("Invalid prompt ID", { status: 400 });
     }
+
+    // Find and delete
+    const deletedPrompt = await Prompt.findByIdAndDelete(params.id);
+
+    if (!deletedPrompt) {
+      return new Response("Prompt not found", { status: 404 });
+    }
+
+    return new Response("Prompt deleted successfully", { status: 200 });
+  } catch (error) {
+    console.error("Error deleting prompt:", error); // <--- log the actual error
+    return new Response(`Error deleting prompt: ${error.message}`, { status: 500 });
+  }
 };

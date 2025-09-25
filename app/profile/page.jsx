@@ -28,24 +28,22 @@ const MyProfile = () => {
   };
 
   const handleDelete = async (post) => {
-    const hasConfirmed = confirm(
-      "Are you sure you want to delete this prompt?"
-    );
+  if (!confirm("Are you sure you want to delete this prompt?")) return;
 
-    if (hasConfirmed) {
-      try {
-        await fetch(`/api/prompt/${post._id.toString()}`, {
-          method: "DELETE",
-        });
+  try {
+    const response = await fetch(`/api/prompt/${post._id}`, { method: "DELETE" });
 
-        const filteredPosts = myPosts.filter((item) => item._id !== post._id);
-
-        setMyPosts(filteredPosts);
-      } catch (error) {
-        console.log(error);
-      }
+    if (!response.ok) {
+      const text = await response.text();
+      throw new Error(text || "Failed to delete");
     }
-  };
+
+    setMyPosts(myPosts.filter((item) => item._id !== post._id));
+  } catch (error) {
+    console.error("Delete failed:", error.message);
+    alert(`Delete failed: ${error.message}`);
+  }
+};
 
   return (
     <Profile
