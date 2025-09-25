@@ -1,6 +1,8 @@
-"use client"; // necessary for hooks
+"use client";
 
 export const dynamic = "force-dynamic";
+export const fetchCache = "force-no-store"; // ⬅️ ensures no caching issues
+export const revalidate = 0; // ⬅️ disables ISR for this page
 
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
