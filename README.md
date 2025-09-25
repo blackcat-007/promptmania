@@ -5,29 +5,40 @@
     width="320"
   >
   <br>
-  🧠 PromptMania
+  
 </h1>
 
 <p align="center">
-  <em>A community-driven hub for sharing, storing, and discovering the most powerful AI prompts ✨</em>
+  <em>🎉 Explore trending AI prompts, save your favorites, and have fun generating images, videos, and more! 🚀</em>
 </p>
 
 <p align="center">
-  <a href="https://github.com/blackcat-007/promptmania" target="_blank">🌐 GitHub Repo</a> • 
-  <a href="https://nextjs.org/" target="_blank">⚡ Built with Next.js</a> • 
-  <a href="https://vercel.com/" target="_blank">🚀 Deploy on Vercel</a>
+  <!-- Tech & feature badges -->
+  <img src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white" alt="Next.js Badge">
+  <img src="https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white" alt="MongoDB Badge">
+  <img src="https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Tailwind Badge">
+  <img src="https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white" alt="Vercel Badge">
+  <img src="https://img.shields.io/badge/NextAuth.js-000000?style=for-the-badge&logo=nextauth.js&logoColor=white" alt="NextAuth Badge">
+  <img src="https://img.shields.io/badge/Trending_Prompts-ff69b4?style=for-the-badge" alt="Trending Prompts Badge">
+  <img src="https://img.shields.io/badge/Save_Your_Prompts-1E90FF?style=for-the-badge" alt="Save Your Prompts Badge">
+  <img src="https://img.shields.io/badge/🎨_Fun_with_AI-Fuchsia?style=for-the-badge" alt="Fun with AI Badge">
+</p>
+
+<p align="center">
+  <a href="https://github.com/blackcat-007/promptmania" target="_blank">🌐 GitHub Repo</a>
 </p>
 
 <hr>
 
-<h2>🚀 Features</h2>
+<h2>🚀 What You Can Do with PromptMania</h2>
 <ul>
-  <li>📌 Post and save <strong>ChatGPT, Gemini, Perplexity, Grok</strong> prompts</li>
-  <li>💡 Explore trending prompts for videos, social posts, and project work</li>
-  <li>🔍 Full-text search by <strong>tag, keyword, or author</strong></li>
-  <li>✂️ One-click copy to clipboard</li>
-  <li>👤 Personalized profile page with your saved prompts</li>
-  <li>🔐 Secure Google OAuth authentication with <code>NextAuth.js</code></li>
+  <li>📌 Discover and post trending AI prompts</li>
+  <li>💾 Save your favorite prompts for easy access</li>
+  <li>🎨 Use prompts to generate images, videos, music, or social media content</li>
+  <li>🔍 Search by keyword, tag, or author</li>
+  <li>✂️ Copy any prompt with one click</li>
+  <li>👤 Personal profile page to manage your creations</li>
+  <li>🔐 Secure Google OAuth login via NextAuth.js</li>
 </ul>
 
 <h2>🧰 Tech Stack</h2>
@@ -87,7 +98,7 @@ promptmania/
 <h2>🧪 How It Works</h2>
 <p>
   🔑 Sign in with Google → ✅ Session issued via JWT → 📝 Create, update, and save prompts → 
-  📦 Stored in MongoDB → 🌍 Explore trending prompts & profiles → ⚡ Copy prompts instantly.
+  📦 Stored in MongoDB → 🌍 Explore trending prompts → 🎨 Generate fun images, videos, and content → ⚡ Copy prompts instantly.
 </p>
 
 <h2>💻 Local Setup</h2>
@@ -98,7 +109,7 @@ promptmania/
   <li>Install dependencies:
     <pre>npm install</pre>
   </li>
-  <li>Create <code>.env.local</code> in root and add:
+  <li>Create <code>.env.local</code> in root and add placeholders:
     <pre>
 MONGODB_URI=your_mongo_uri
 NEXTAUTH_URL=http://localhost:3000
@@ -127,6 +138,7 @@ GOOGLE_CLIENT_SECRET=your_google_client_secret
   <li>📊 Trending prompts & top contributors</li>
   <li>💬 Commenting & rating system</li>
   <li>📱 Mobile-first redesign</li>
+  <li>🎮 Fun interactive AI games using prompts</li>
 </ul>
 
 <h2>🙋‍♂️ Author</h2>
