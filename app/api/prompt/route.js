@@ -1,6 +1,6 @@
 import Prompt from "@models/prompt";
 import { connectToDB } from "@utils/database";
-
+export const revalidate = 0; // disable ISR caching for this route
 export const GET = async (request) => {
     try {
         await connectToDB()
