@@ -1,4 +1,6 @@
-"use client";
+"use client"; // necessary for hooks
+
+export const dynamic = "force-dynamic";
 
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -13,35 +15,34 @@ const UpdatePrompt = () => {
   const [submitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
+    if (!promptId) return;
+
     const getPromptDetails = async () => {
       try {
-        const response = await fetch(`/api/prompt/${promptId}`);
-        if (!response.ok) throw new Error("Failed to fetch prompt");
-
-        const data = await response.json();
+        const res = await fetch(`/api/prompt/${promptId}`);
+        if (!res.ok) throw new Error("Failed to fetch prompt");
+        const data = await res.json();
         setPost({ prompt: data.prompt, tag: data.tag });
       } catch (err) {
         console.error(err);
       }
     };
 
-    if (promptId) getPromptDetails();
+    getPromptDetails();
   }, [promptId]);
 
   const updatePrompt = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-
-    if (!promptId) return alert("Missing PromptId!");
+    if (!promptId) return alert("Missing PromptId");
 
     try {
-      const response = await fetch(`/api/prompt/${promptId}`, {
+      const res = await fetch(`/api/prompt/${promptId}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt: post.prompt, tag: post.tag }),
+        body: JSON.stringify(post),
       });
-
-      if (response.ok) router.push("/");
+      if (res.ok) router.push("/");
     } catch (err) {
       console.error(err);
     } finally {
