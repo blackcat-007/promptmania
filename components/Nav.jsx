@@ -4,6 +4,7 @@ import Image from 'next/image';
 import {useState,useEffect } from 'react';
 import {signIn,signOut,getProviders} from 'next-auth/react';
 import { useSession } from 'next-auth/react';
+import ThemeSwitcher from './Themechanger';
 const Nav = () => {
   const { data: session } = useSession();
 
@@ -130,7 +131,7 @@ const Nav = () => {
           </>
         )}
       </div>
-      
+      <ThemeSwitcher/>
     </nav>
   )
 }

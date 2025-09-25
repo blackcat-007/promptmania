@@ -2,6 +2,7 @@
 import '@styles/global.css';
 import Nav from '@components/Nav';
 import Provider from '@components/Provider';
+import { ThemeProvider } from './provider';
 export const metadata={
    title:"Promptmania",
    description:"Discover and Share AI prompts",
@@ -10,7 +11,8 @@ const RootLayout = ({children}) => {
   return (
     <html lang='en'>
      
-      <body>
+      <body className="bg-white text-black dark:bg-gray-900 dark:text-white">
+        <ThemeProvider>
       <Provider>
         <div className='main'><div className='gradient'/></div>
         <main className="app">
@@ -19,6 +21,7 @@ const RootLayout = ({children}) => {
           {children}        
       </main>
       </Provider>
+      </ThemeProvider>
       </body>
       
       
