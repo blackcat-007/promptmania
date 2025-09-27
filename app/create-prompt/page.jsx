@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-
 import Form from "@components/Form";
 
 const CreatePrompt = () => {
@@ -11,7 +10,16 @@ const CreatePrompt = () => {
   const { data: session } = useSession();
 
   const [submitting, setIsSubmitting] = useState(false);
-  const [post, setPost] = useState({ prompt: "", tag: "" });
+  const [post, setPost] = useState({
+    heading: "",
+    prompt: "",
+    tag: "",
+    categories: [],
+    platforms: [],
+    mediaUrl: "",
+    mediaPublicId:"",
+    isPublic: true,
+  });
 
   const createPrompt = async (e) => {
     e.preventDefault();
@@ -21,15 +29,14 @@ const CreatePrompt = () => {
       const response = await fetch("/api/prompt/new", {
         method: "POST",
         body: JSON.stringify({
-          prompt: post.prompt,
+          ...post,
           userId: session?.user.id,
-          tag: post.tag,
         }),
       });
+      console.log("Creating new prompt with:", post);
 
-      if (response.ok) {
-        router.push("/");
-      }
+
+      if (response.ok) router.push("/");
     } catch (error) {
       console.log(error);
     } finally {
@@ -39,7 +46,7 @@ const CreatePrompt = () => {
 
   return (
     <Form
-      type='Create'
+      type="Create"
       post={post}
       setPost={setPost}
       submitting={submitting}

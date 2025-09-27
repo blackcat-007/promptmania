@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
+    "cloudinary": "^2.7.0",
     "framer-motion": "^12.23.22",
     "mongodb": "^6.8.0",
     "mongoose": "^8.5.3",

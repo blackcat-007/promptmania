@@ -10,11 +10,18 @@ const UpdatePrompt = ({ params }) => {
 
   const [submitting, setSubmitting] = useState(false);
   const [post, setPost] = useState({
-    prompt: "",
-    tag: "",
-  });
+  heading: "",
+  prompt: "",
+  tag: "",
+  categories: [],
+  platforms: [],
+  mediaUrl: "",
+  mediaPublicId: "",
+  isPublic: true,
+});
 
-  // Fetch the existing prompt details
+
+  // Fetch existing prompt
   useEffect(() => {
     const getPromptDetails = async () => {
       try {
@@ -23,9 +30,16 @@ const UpdatePrompt = ({ params }) => {
 
         const data = await response.json();
         setPost({
-          prompt: data.prompt,
-          tag: data.tag,
-        });
+  heading: data.heading,
+  prompt: data.prompt,
+  tag: data.tag,
+  categories: data.categories || [],
+  platforms: data.platforms || [],
+  mediaUrl: data.mediaUrl || "",
+  mediaPublicId: data.mediaPublicId || "",
+  isPublic: data.isPublic ?? true,
+});
+
       } catch (error) {
         console.error("Error fetching prompt:", error.message);
       }
@@ -34,6 +48,7 @@ const UpdatePrompt = ({ params }) => {
     if (promptId) getPromptDetails();
   }, [promptId]);
 
+  // Update handler
   const updatePrompt = async (e) => {
     e.preventDefault();
     setSubmitting(true);
@@ -43,10 +58,10 @@ const UpdatePrompt = ({ params }) => {
     try {
       const response = await fetch(`/api/prompt/${promptId}`, {
         method: "PATCH",
+        headers: { "Content-Type": "application/json" }, // ✅ important
         body: JSON.stringify({
-          prompt: post.prompt,
-          tag: post.tag,
-        }),
+  ...post,   // send all fields
+}),
       });
 
       if (response.ok) {
