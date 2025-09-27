@@ -82,7 +82,7 @@ const PromptCard = ({ post, handleEdit, handleDelete, handleTagClick, searchText
           {post.mediaUrl.endsWith(".mp4") || post.mediaUrl.includes("youtube") ? (
             <video src={post.mediaUrl} controls className="w-full rounded-lg" />
           ) : (
-            <Image
+            <img
               src={post.mediaUrl}
               alt="demo"
               width={500}

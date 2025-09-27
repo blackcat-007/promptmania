@@ -1,9 +1,13 @@
+"use client";
 import Link from "next/link";
-
+import { useState } from "react";
+import { Cloud } from "lucide-react"; // cloud icon from lucide-react (lightweight & clean)
 const categoriesList = ["fun", "art", "ai images", "ai videos", "coding", "json"];
-const platformsList = ["ChatGPT", "Gemini", "Perplexity","Veo","Grok"];
+const platformsList = ["ChatGPT", "Gemini", "Perplexity", "Veo", "Grok"];
 
 const Form = ({ type, post, setPost, submitting, handleSubmit }) => {
+  const [loading, setLoading] = useState(false);
+
   const toggleCategory = (cat) => {
     setPost({
       ...post,
@@ -30,56 +34,59 @@ const Form = ({ type, post, setPost, submitting, handleSubmit }) => {
       <p className="desc text-left max-w-md">
         {type} and share amazing prompts with the world
       </p>
-      <div className="border-l-4 mt-2 border-red-500 bg-red-50 dark:bg-red-950 p-4 rounded-md">
-  <h3 className="text-red-700 font-semibold flex items-center gap-2">
-    ⚠️ Warning!
-  </h3>
-  <p className="mt-2 text-red-600">
-    Your prompt must follow our community guidelines. <strong>No violent, offensive, or inappropriate content.</strong>
-  </p>
-  <ul className="mt-2 ml-4 list-disc text-red-600">
-    <li>First violation → Prompt deleted</li>
-    <li>Repeated violations → Account blocked</li>
-  </ul>
-  <p className="mt-2 text-red-700 font-medium">Create responsibly! 🚀</p>
-</div>
-<div className="border-l-4 mt-6 border-blue-500 bg-blue-50 dark:bg-blue-950 p-4 rounded-md">
-  <h3 className="text-blue-700 font-semibold flex items-center gap-2">
-    📝 How to Create a Great Prompt
-  </h3>
-  <p className="mt-2 text-blue-600">
-    Follow these instructions carefully to make your prompt useful and discoverable by others:
-  </p>
-  <ul className="mt-2 ml-4 list-disc text-blue-600 space-y-1">
-    <li>
-      <strong>Write a clear heading:</strong> Make it descriptive so users know what your prompt is about.
-    </li>
-    <li>
-      <strong>Write the prompt text:</strong> Be specific and concise so it generates the desired results.
-    </li>
-    <li>
-      <strong>Select categories and platforms:</strong> Choose relevant categories and platforms to help users find your prompt easily.
-    </li>
-    <li>
-      <strong>Add sub-categories or tags:</strong> Use relevant tags to make your prompt searchable and organized.
-    </li>
-     <li>
-      <strong>Upload Demo:</strong> Upload generated image or video if needed.
-    </li>
-    <li>
-      <strong>Set privacy:</strong> 
-      <ul className="ml-6 list-disc">
-        <li><strong>Public:</strong> Everyone can see and use your prompt.</li>
-        <li><strong>Private:</strong> Only you can see your prompt.</li>
-      </ul>
-    </li>
-    <li>
-      <strong>Follow the instructions:</strong> Properly created prompts are easier to use, appreciated by the community, and help maintain a healthy platform.
-    </li>
-  </ul>
-  <p className="mt-2 text-blue-700 font-medium">Create responsibly and make your prompt shine! ✨</p>
-</div>
 
+      {/* Warning Section */}
+      <div className="border-l-4 mt-2 border-red-500 bg-red-50 dark:bg-red-950 p-4 rounded-md">
+        <h3 className="text-red-700 font-semibold flex items-center gap-2">
+          ⚠️ Warning!
+        </h3>
+        <p className="mt-2 text-red-600">
+          Your prompt must follow our community guidelines.{" "}
+          <strong>No violent, offensive, or inappropriate content.</strong>
+        </p>
+        <ul className="mt-2 ml-4 list-disc text-red-600">
+          <li>First violation → Prompt deleted</li>
+          <li>Repeated violations → Account blocked</li>
+        </ul>
+        <p className="mt-2 text-red-700 font-medium">Create responsibly! 🚀</p>
+        <p className="mt-2 text-sm text-blue-600 dark:text-blue-400 hover:underline">
+          <Link href="/community-guidelines">
+            Read the full Community Guidelines
+          </Link>
+        </p>
+      </div>
+
+      {/* Instructions Section */}
+      <div className="border-l-4 mt-6 border-blue-500 bg-blue-50 dark:bg-blue-950 p-4 rounded-md">
+        <h3 className="text-blue-700 font-semibold flex items-center gap-2">
+          📝 How to Create a Great Prompt
+        </h3>
+        <ul className="mt-2 ml-4 list-disc text-blue-600 space-y-1">
+          <li>
+            <strong>Write a clear heading:</strong> Be descriptive.
+          </li>
+          <li>
+            <strong>Write the prompt text:</strong> Keep it specific.
+          </li>
+          <li>
+            <strong>Select categories and platforms:</strong> Help users find it.
+          </li>
+          <li>
+            <strong>Add tags/subcategories:</strong> Improve search.
+          </li>
+          <li>
+            <strong>Upload Demo:</strong> Add generated images/videos.
+          </li>
+          <li>
+            <strong>Privacy:</strong> Public = everyone sees, Private = only you.
+          </li>
+        </ul>
+        <p className="mt-2 text-blue-700 font-medium">
+          Create responsibly and make your prompt shine! ✨
+        </p>
+      </div>
+
+      {/* Main Form */}
       <form
         onSubmit={handleSubmit}
         className="mt-10 w-full max-w-2xl flex flex-col gap-7 glassmorphism"
@@ -108,8 +115,6 @@ const Form = ({ type, post, setPost, submitting, handleSubmit }) => {
           />
         </label>
 
-        
-
         {/* Categories */}
         <label>
           <span className="font-semibold">Categories</span>
@@ -119,7 +124,7 @@ const Form = ({ type, post, setPost, submitting, handleSubmit }) => {
                 type="button"
                 key={cat}
                 onClick={() => toggleCategory(cat)}
-                className={`px-3 py-1 rounded-full text-sm  ${
+                className={`px-3 py-1 rounded-full text-sm ${
                   post.categories.includes(cat)
                     ? "bg-blue-600 text-white"
                     : "bg-gray-200 dark:bg-slate-600"
@@ -130,18 +135,20 @@ const Form = ({ type, post, setPost, submitting, handleSubmit }) => {
             ))}
           </div>
         </label>
-            {/* Tag */}
+
+        {/* Tag */}
         <label>
-          <span className="font-semibold">Field of Prompt (#tag & subcategories)</span>
+          <span className="font-semibold">Tags/Subcategories</span>
           <input
             value={post.tag}
             onChange={(e) => setPost({ ...post, tag: e.target.value })}
             type="text"
-            placeholder="you can write extra tags and subcategories"
+            placeholder="#tags for better search"
             required
             className="form_input"
           />
         </label>
+
         {/* Platforms */}
         <label>
           <span className="font-semibold">Platforms</span>
@@ -151,7 +158,7 @@ const Form = ({ type, post, setPost, submitting, handleSubmit }) => {
                 type="button"
                 key={plat}
                 onClick={() => togglePlatform(plat)}
-                className={`px-3 py-1 rounded-full text-sm  ${
+                className={`px-3 py-1 rounded-full text-sm ${
                   post.platforms.includes(plat)
                     ? "bg-green-600 text-white"
                     : "bg-gray-200 dark:bg-slate-600"
@@ -163,52 +170,68 @@ const Form = ({ type, post, setPost, submitting, handleSubmit }) => {
           </div>
         </label>
 
-        {/* Media upload */}
+        {/* Media Upload */}
         <label>
-  <span className="font-semibold">Upload Image/Video</span>
-  <input
-  type="file"
-  accept="image/*,video/*"
-  onChange={async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
+          <span className="font-semibold">Upload Image/Video</span>
+          <input
+            type="file"
+            accept="image/*,video/*"
+            onChange={async (e) => {
+              const file = e.target.files[0];
+              if (!file) return;
 
-    const formData = new FormData();
-    formData.append("file", file);
+              const formData = new FormData();
+              formData.append("file", file);
 
-    try {
-      const res = await fetch("/api/upload", {
-        method: "POST",
-        body: formData,
-      });
+              try {
+                setLoading(true); // show loader
+                const res = await fetch("/api/upload", {
+                  method: "POST",
+                  body: formData,
+                });
 
-      const data = await res.json();
-      if (data.url) {
-        setPost({
-          ...post,
-          mediaUrl: data.url,
-          mediaPublicId: data.public_id, // store public_id
-        });
-      }
-    } catch (err) {
-      console.error("Upload failed", err);
-    }
-  }}
-  className="form_input"
-/>
+                const data = await res.json();
+                if (data.url) {
+                  setPost({
+                    ...post,
+                    mediaUrl: data.url,
+                    mediaPublicId: data.public_id,
+                  });
+                }
+              } catch (err) {
+                console.error("Upload failed", err);
+              } finally {
+                setLoading(false); // hide loader
+              }
+            }}
+            className="form_input"
+          />
 
-  {post.mediaUrl && (
-    <div className="mt-3">
-      {post.mediaUrl.includes("video") ? (
-        <video src={post.mediaUrl} controls className="max-h-64 rounded-lg" />
-      ) : (
-        <img src={post.mediaUrl} alt="Preview" className="max-h-64 rounded-lg" />
-      )}
-    </div>
-  )}
-</label>
+          {/* Loader */}
+          {loading && (
+            <div className="mt-3 flex flex-col items-center justify-center text-orange-600">
+              <Cloud className="w-12 h-12 text-orange-500 animate-pulse" />
+              <p className="mt-2 font-medium">Please wait, media is uploading...</p>
+            </div>
+          )}
 
-        {/* Public/Private toggle */}
+          {/* Preview */}
+          {!loading && post.mediaUrl && (
+            <div className="mt-3">
+              {post.mediaUrl.includes("video") ? (
+                <video src={post.mediaUrl} controls className="max-h-64 rounded-lg" />
+              ) : (
+                <img
+                  src={post.mediaUrl}
+                  alt="Preview"
+                  className="max-h-64 rounded-lg"
+                />
+              )}
+            </div>
+          )}
+        </label>
+
+        {/* Public/Private */}
         <label className="flex items-center gap-3">
           <span className="font-semibold">Make Public?</span>
           <input

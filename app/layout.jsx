@@ -3,6 +3,7 @@ import '@styles/global.css';
 import Nav from '@components/Nav';
 import Provider from '@components/Provider';
 import { ThemeProvider } from './provider';
+import Footer from '@components/footer';
 export const metadata={
    title:"Promptmania",
    description:"Discover and Share AI prompts",
@@ -23,7 +24,8 @@ const RootLayout = ({children}) => {
         <main className="app">
             <Nav/>
             
-          {children}        
+          {children} 
+          <Footer/>       
       </main>
       </Provider>
       </ThemeProvider>
