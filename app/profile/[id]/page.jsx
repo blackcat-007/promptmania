@@ -13,7 +13,8 @@ const UserProfile = ({ params }) => {
     const fetchPosts = async () => {
       if (!params?.id) return;
       const response = await fetch(`/api/users/${params.id}/posts`);
-      const data = await response.json();
+      let data = await response.json();
+      if (!Array.isArray(data)) data = []; // fallback if API fails
       setUserPosts(data); // All posts, Profile component will filter isPublic
     };
     fetchPosts();

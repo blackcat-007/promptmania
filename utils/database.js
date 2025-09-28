@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-// Use a cached connection across hot reloads / serverless invocations
+// Global cached connection across serverless invocations
 let cached = global.mongoose;
 
 if (!cached) {
