@@ -38,6 +38,10 @@ const Nav = () => {
             <Link href='/create-prompt' className='black_btn'>
               Create Post
             </Link>
+             <Link href='/saved' className='black_btn'>
+              Saved Post
+            </Link>
+
 
             <button type='button' onClick={signOut} className='outline_btn'>
               Sign Out

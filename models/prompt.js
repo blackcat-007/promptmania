@@ -13,8 +13,19 @@ const PromptSchema = new mongoose.Schema({
   mediaPublicId: { type: String, default: "" },
 
   isPublic: { type: Boolean, default: true },
+  copiedCount: {
+    type: Number,
+    default: 0,
+  },
+  copiedBy: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ],
   createdAt: { type: Date, default: Date.now },
 });
+
 
 // Delete cached model if exists
 delete mongoose.models.Prompt;
