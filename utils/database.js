@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 
+// Use a cached connection across hot reloads / serverless invocations
 let cached = global.mongoose;
 
 if (!cached) {
@@ -12,12 +13,19 @@ export const connectToDB = async () => {
   }
 
   if (!cached.promise) {
-    cached.promise = mongoose.connect(process.env.MONGODB_URI, {
-      dbName: "share_prompt",
-      bufferCommands: false,
-    }).then((mongoose) => {
-      return mongoose;
-    });
+    cached.promise = mongoose
+      .connect(process.env.MONGODB_URI, {
+        dbName: "share_prompt",
+        bufferCommands: false,
+      })
+      .then((mongoose) => {
+        console.log("✅ MongoDB connected");
+        return mongoose;
+      })
+      .catch((err) => {
+        console.error("❌ MongoDB connection error:", err);
+        throw err;
+      });
   }
 
   cached.conn = await cached.promise;
