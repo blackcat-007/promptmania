@@ -146,7 +146,18 @@ const PromptCard = ({ post, handleEdit, handleDelete, handleTagClick, searchText
       {/* Heading */}
       {post.heading && (
         <h2 className="mt-3 font-satoshi text-lg font-bold text-gray-800 dark:text-white">
-          {highlightText(post.heading, searchText)}
+           {highlightText(
+            showFullPrompt ? post.heading : post.heading.slice(0, 150) + (post.heading.length > 100 ? "..." : ""),
+            searchText
+          )}
+          {post.heading.length > 100 && (
+            <button
+              className="ml-2 text-blue-500 dark:text-blue-300 text-xs underline"
+              onClick={() => setShowFullPrompt(!showFullPrompt)}
+            >
+              {showFullPrompt ? "Show less" : "Show more"}
+            </button>
+          )}
         </h2>
       )}
 
@@ -187,7 +198,7 @@ const PromptCard = ({ post, handleEdit, handleDelete, handleTagClick, searchText
   </div>
       {/* Copied Count */}
       <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-        Copied by {copiedCount} {copiedCount === 1 ? "user" : "users"}
+        Used by {copiedCount} {copiedCount === 1 ? "user" : "users"}
       </p>
 
       {/* Categories */}

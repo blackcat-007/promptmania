@@ -27,11 +27,11 @@ const Feed = () => {
   const [searchedResults, setSearchedResults] = useState([]);
   const [activeCategory, setActiveCategory] = useState("");
   const [activePlatform, setActivePlatform] = useState("");
+  const [trending, setTrending] = useState(false);
 
   const fetchPosts = async () => {
     const response = await fetch("/api/prompt", { cache: "no-store" });
     const data = await response.json();
-    // Only public posts for feed
     setAllPosts(data.filter(post => post.isPublic));
   };
 
@@ -40,10 +40,9 @@ const Feed = () => {
   }, []);
 
   // --- Unified filter ---
-  const filterPrompts = (text = "", category = "", platform = "") => {
+  const filterPrompts = (text = "", category = "", platform = "", isTrending = false) => {
     const regex = new RegExp(text, "i");
-    return allPosts.filter(post => {
-      // Filter by search text
+    let results = allPosts.filter(post => {
       let matchesSearch = true;
       if (text) {
         matchesSearch =
@@ -55,69 +54,89 @@ const Feed = () => {
           (post.platforms?.some(plat => regex.test(plat)));
       }
 
-      // Filter by category
       let matchesCategory = true;
       if (category) {
-        matchesCategory = post.categories?.some(cat => cat.toLowerCase() === category.toLowerCase());
+        matchesCategory = post.categories?.some(
+          cat => cat.toLowerCase() === category.toLowerCase()
+        );
       }
 
-      // Filter by platform
       let matchesPlatform = true;
       if (platform) {
-        matchesPlatform = post.platforms?.some(plat => plat.toLowerCase() === platform.toLowerCase());
+        matchesPlatform = post.platforms?.some(
+          plat => plat.toLowerCase() === platform.toLowerCase()
+        );
       }
 
       return matchesSearch && matchesCategory && matchesPlatform;
     });
+
+    // If Trending active → sort by copiedCount + createdAt
+    if (isTrending) {
+      results = results.sort((a, b) => {
+        if (b.copiedCount !== a.copiedCount) {
+          return b.copiedCount - a.copiedCount;
+        }
+        return new Date(b.createdAt) - new Date(a.createdAt);
+      });
+    }
+
+    return results;
   };
 
   // --- Handlers ---
   const handleSearchChange = (e) => {
     const text = e.target.value;
     setSearchText(text);
-    setSearchedResults(filterPrompts(text, activeCategory, activePlatform));
+    setSearchedResults(filterPrompts(text, activeCategory, activePlatform, trending));
   };
 
   const handleCategoryClick = (category) => {
     const newCategory = activeCategory === category ? "" : category;
     setActiveCategory(newCategory);
-    setSearchedResults(filterPrompts(searchText, newCategory, activePlatform));
+    setSearchedResults(filterPrompts(searchText, newCategory, activePlatform, trending));
   };
 
   const handlePlatformClick = (platform) => {
     const newPlatform = activePlatform === platform ? "" : platform;
     setActivePlatform(newPlatform);
-    setSearchedResults(filterPrompts(searchText, activeCategory, newPlatform));
+    setSearchedResults(filterPrompts(searchText, activeCategory, newPlatform, trending));
   };
 
   const handleTagClick = (tagName) => {
     setSearchText(tagName);
     setActiveCategory("");
     setActivePlatform("");
-    setSearchedResults(filterPrompts(tagName, "", ""));
+    setSearchedResults(filterPrompts(tagName, "", "", trending));
   };
 
   const clearFilter = (type) => {
     if (type === "category") {
       setActiveCategory("");
-      setSearchedResults(filterPrompts(searchText, "", activePlatform));
+      setSearchedResults(filterPrompts(searchText, "", activePlatform, trending));
     } else if (type === "platform") {
       setActivePlatform("");
-      setSearchedResults(filterPrompts(searchText, activeCategory, ""));
+      setSearchedResults(filterPrompts(searchText, activeCategory, "", trending));
     }
   };
 
+  const handleTrendingClick = () => {
+    const newTrending = !trending;
+    setTrending(newTrending);
+    setSearchedResults(filterPrompts(searchText, activeCategory, activePlatform, newTrending));
+  };
+
   return (
-    <section className='feed'>
+    <section className="feed">
       {/* Search bar */}
-      <form className='relative w-full flex-center mb-4'>
+      <form className="relative w-full flex-center mb-4">
         <input
-          type='text'
-          placeholder='Search by username, tag, category, heading, prompt, or platform'
+          type="text"
+          placeholder="Search by username, tag, category, heading, prompt, or platform"
           value={searchText}
           onChange={handleSearchChange}
           required
-          className='search_input peer'
+          className="search_input peer"
         />
       </form>
 
@@ -152,12 +171,27 @@ const Feed = () => {
             {plat}
           </button>
         ))}
+
+        {/* 🔥 Trending button */}
+        <button
+          type="button"
+          className={`px-4 py-1 rounded-full text-sm font-medium transition-all duration-200 ${
+            trending
+              ? "bg-gradient-to-r from-orange-500 to-yellow-400 text-white shadow-lg animate-pulse"
+              : "bg-orange-100 dark:bg-orange-800 text-orange-700 dark:text-orange-200 hover:bg-orange-200 dark:hover:bg-orange-700"
+          }`}
+          onClick={handleTrendingClick}
+        >
+          🔥 Trending
+        </button>
       </div>
 
       {/* Active filters display */}
-      {(activeCategory || activePlatform) && (
+      {(activeCategory || activePlatform || trending) && (
         <div className="flex items-center gap-2 mb-4 flex-wrap">
-          <span className="font-semibold text-gray-700 dark:text-gray-300">Filtered by:</span>
+          <span className="font-semibold text-gray-700 dark:text-gray-300">
+            Filtered by:
+          </span>
           {activeCategory && (
             <span
               className="px-2 py-1 rounded-full bg-blue-600 text-white text-sm cursor-pointer"
@@ -174,12 +208,24 @@ const Feed = () => {
               {activePlatform} ✕
             </span>
           )}
+          {trending && (
+            <span
+              className="px-2 py-1 rounded-full bg-gradient-to-r from-orange-500 to-yellow-400 text-white text-sm cursor-pointer"
+              onClick={handleTrendingClick}
+            >
+              Trending ✕
+            </span>
+          )}
         </div>
       )}
 
       {/* Display prompts */}
       <PromptCardList
-        data={searchText || activeCategory || activePlatform ? searchedResults : allPosts}
+        data={
+          searchText || activeCategory || activePlatform || trending
+            ? searchedResults
+            : allPosts
+        }
         handleTagClick={handleTagClick}
         searchText={searchText}
       />
