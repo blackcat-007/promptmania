@@ -6,8 +6,7 @@ import Loader from "./loader"; // Your loader component
 import Refresh from "./refresh"; // Your refresh button component
 
 const categoriesList = ["fun", "art", "ai images", "ai videos", "coding", "json"];
-const platformsList = ["ChatGPT", "Gemini", "Perplexity", "Veo", "Grok"];
-
+const platformsList = ["ChatGPT","Cursor AI","Claude Sonnet 4.5","GitHub Copilot", "Gemini", "Perplexity", "Veo", "Grok","DALL·E 3","Pixlr","OpenAI Sora","Hailuo AI",];
 const PromptCardList = ({ data, handleTagClick, searchText }) => (
   <div className="mt-16 prompt_layout">
     {data.map((post) => (

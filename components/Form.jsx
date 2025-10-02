@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { Cloud } from "lucide-react"; // cloud icon from lucide-react (lightweight & clean)
 const categoriesList = ["fun", "art", "ai images", "ai videos", "coding", "json"];
-const platformsList = ["ChatGPT", "Gemini", "Perplexity", "Veo", "Grok"];
+const platformsList = ["ChatGPT","Cursor AI","Claude Sonnet 4.5","GitHub Copilot", "Gemini", "Perplexity", "Veo", "Grok","DALL·E 3","Pixlr","OpenAI Sora","Hailuo AI",];
 
 const Form = ({ type, post, setPost, submitting, handleSubmit }) => {
   const [loading, setLoading] = useState(false);
