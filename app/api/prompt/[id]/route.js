@@ -1,5 +1,6 @@
 import Prompt from "@models/prompt";
 import { connectToDB } from "@utils/database";
+import User from "@models/user";
 import mongoose from "mongoose";
 import { v2 as cloudinary } from "cloudinary";
 

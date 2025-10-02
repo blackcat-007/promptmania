@@ -1,5 +1,6 @@
 import Prompt from "@models/prompt";
 import { connectToDB } from "@utils/database";
+import User from "@models/user";
 
 export const revalidate = 0;
 

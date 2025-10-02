@@ -1,6 +1,6 @@
 import { connectToDB } from "@utils/database";
 import Saved from "@models/saved";
-
+import User from "@models/user";
 export const GET = async (req, { params }) => {
   try {
     await connectToDB();
