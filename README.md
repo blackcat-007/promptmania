@@ -78,7 +78,27 @@
     </tr>
   </tbody>
 </table>
-
+<h2>Project Overview</h2>
+<h3>landing page</h3>
+<img src="https://res.cloudinary.com/ddcdrrav8/image/upload/v1759389645/Screenshot_2025-10-02_124336_giurfo.png">
+<img src="https://res.cloudinary.com/ddcdrrav8/image/upload/v1759389645/Screenshot_2025-10-02_124404_qnqqau.png">
+<img src="https://res.cloudinary.com/ddcdrrav8/image/upload/v1759389645/Screenshot_2025-10-02_124349_hc5opj.png">
+<img src="https://res.cloudinary.com/ddcdrrav8/image/upload/v1759389667/Screenshot_2025-10-02_124431_zgwspy.png">
+<h3>search engine</h3>
+<img src="https://res.cloudinary.com/ddcdrrav8/image/upload/v1759390445/Screenshot_2025-10-02_130308_vplbdg.png">
+<img src="https://res.cloudinary.com/ddcdrrav8/image/upload/v1759390446/Screenshot_2025-10-02_130319_xycfzh.png">
+<img src="https://res.cloudinary.com/ddcdrrav8/image/upload/v1759390454/Screenshot_2025-10-02_130303_heynpb.png">
+<h3>profile page</h3>
+<img src="https://res.cloudinary.com/ddcdrrav8/image/upload/v1759389646/Screenshot_2025-10-02_124438_mt14tk.png">
+<img src="https://res.cloudinary.com/ddcdrrav8/image/upload/v1759389645/Screenshot_2025-10-02_124506_ym3eee.png">
+<h3>easy access to all ai platforms</h3>
+<img src="https://res.cloudinary.com/ddcdrrav8/image/upload/v1759389646/Screenshot_2025-10-02_124635_d99dam.png">
+<img src="https://res.cloudinary.com/ddcdrrav8/image/upload/v1759389645/Screenshot_2025-10-02_124600_knnjkv.png">
+<h3>create prompt</h3>
+<img src="https://res.cloudinary.com/ddcdrrav8/image/upload/v1759389646/Screenshot_2025-10-02_124658_g82qs5.png">
+<img src="https://res.cloudinary.com/ddcdrrav8/image/upload/v1759389646/Screenshot_2025-10-02_124703_vsbr1a.png">
+<h3>saved prompts</h3>
+<img src="https://res.cloudinary.com/ddcdrrav8/image/upload/v1759389646/Screenshot_2025-10-02_124450_tycvmc.png">
 <h2>🗂 Project Structure</h2>
 <pre>
 promptmania/
