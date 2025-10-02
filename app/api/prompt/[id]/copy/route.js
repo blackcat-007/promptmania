@@ -1,6 +1,6 @@
 import { connectToDB } from "@utils/database";
 import Prompt from "@models/prompt";
-
+import User from "@models/user";
 export const POST = async (req, { params }) => {
   try {
     await connectToDB();

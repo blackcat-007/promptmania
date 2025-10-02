@@ -2,24 +2,24 @@
 
 import { useState, useEffect } from "react";
 import PromptCard from "./PromptCard";
+import Loader from "./loader"; // Your loader component
+import Refresh from "./refresh"; // Your refresh button component
 
 const categoriesList = ["fun", "art", "ai images", "ai videos", "coding", "json"];
 const platformsList = ["ChatGPT", "Gemini", "Perplexity", "Veo", "Grok"];
 
-const PromptCardList = ({ data, handleTagClick, searchText }) => {
-  return (
-    <div className="mt-16 prompt_layout">
-      {data.map((post) => (
-        <PromptCard
-          key={post._id}
-          post={post}
-          handleTagClick={handleTagClick}
-          searchText={searchText}
-        />
-      ))}
-    </div>
-  );
-};
+const PromptCardList = ({ data, handleTagClick, searchText }) => (
+  <div className="mt-16 prompt_layout">
+    {data.map((post) => (
+      <PromptCard
+        key={post._id}
+        post={post}
+        handleTagClick={handleTagClick}
+        searchText={searchText}
+      />
+    ))}
+  </div>
+);
 
 const Feed = () => {
   const [allPosts, setAllPosts] = useState([]);
@@ -28,18 +28,30 @@ const Feed = () => {
   const [activeCategory, setActiveCategory] = useState("");
   const [activePlatform, setActivePlatform] = useState("");
   const [trending, setTrending] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
 
   const fetchPosts = async () => {
-    const response = await fetch("/api/prompt", { cache: "no-store" });
-    const data = await response.json();
-    setAllPosts(data.filter(post => post.isPublic));
+    setLoading(true);
+    setError(false);
+    try {
+      const response = await fetch("/api/prompt", { cache: "no-store" });
+      if (!response.ok) throw new Error("Failed to fetch prompts");
+      const data = await response.json();
+      setAllPosts(data.filter(post => post.isPublic));
+    } catch (err) {
+      console.error(err);
+      setError(true);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
     fetchPosts();
   }, []);
 
-  // --- Unified filter ---
+  // --- Unified filter function ---
   const filterPrompts = (text = "", category = "", platform = "", isTrending = false) => {
     const regex = new RegExp(text, "i");
     let results = allPosts.filter(post => {
@@ -71,7 +83,6 @@ const Feed = () => {
       return matchesSearch && matchesCategory && matchesPlatform;
     });
 
-    // If Trending active → sort by copiedCount + createdAt
     if (isTrending) {
       results = results.sort((a, b) => {
         if (b.copiedCount !== a.copiedCount) {
@@ -125,6 +136,9 @@ const Feed = () => {
     setTrending(newTrending);
     setSearchedResults(filterPrompts(searchText, activeCategory, activePlatform, newTrending));
   };
+
+  if (loading) return <Loader />; // Show loader while fetching
+  if (error) return <Refresh onClick={fetchPosts} />; // Show refresh button on error
 
   return (
     <section className="feed">
@@ -189,9 +203,7 @@ const Feed = () => {
       {/* Active filters display */}
       {(activeCategory || activePlatform || trending) && (
         <div className="flex items-center gap-2 mb-4 flex-wrap">
-          <span className="font-semibold text-gray-700 dark:text-gray-300">
-            Filtered by:
-          </span>
+          <span className="font-semibold text-gray-700 dark:text-gray-300">Filtered by:</span>
           {activeCategory && (
             <span
               className="px-2 py-1 rounded-full bg-blue-600 text-white text-sm cursor-pointer"

@@ -4,19 +4,34 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Profile from "@components/Profile";
+import Loader from "@components/loader";
+import Refresh from "@components/refresh";
 
 const MyProfile = () => {
   const router = useRouter();
   const { data: session } = useSession();
   const [myPosts, setMyPosts] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+
+  const fetchPosts = async () => {
+    if (!session?.user.id) return;
+    setLoading(true);
+    setError(false);
+    try {
+      const response = await fetch(`/api/users/${session.user.id}/posts`);
+      if (!response.ok) throw new Error("Failed to fetch posts");
+      const data = await response.json();
+      setMyPosts(data);
+    } catch (err) {
+      console.error(err);
+      setError(true);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchPosts = async () => {
-      if (!session?.user.id) return;
-      const response = await fetch(`/api/users/${session.user.id}/posts`);
-      const data = await response.json();
-      setMyPosts(data); // All posts
-    };
     fetchPosts();
   }, [session?.user.id]);
 
@@ -36,6 +51,12 @@ const MyProfile = () => {
       alert(err.message);
     }
   };
+
+  // Render loader while fetching
+  if (loading) return <Loader />;
+
+  // Render refresh button if fetching failed
+  if (error) return <Refresh onClick={fetchPosts} />;
 
   return (
     <Profile
