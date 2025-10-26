@@ -22,20 +22,18 @@ const highlightText = (text, search) => {
   );
 };
 
-// platforms & whether prefill is supported
+// platforms
 const platformUrls = {
-  "ChatGPT": { prefill: true, url: (p) => `https://chat.openai.com/?q=${encodeURIComponent(p)}` },
-   "Perplexity": { prefill: true, url: (p) => `https://www.perplexity.ai/search?q=${encodeURIComponent(p)}` },
-  "Gemini": { prefill: false, url: (p) => `https://gemini.google.com/` },
- 
-
+  ChatGPT: { prefill: true, url: (p) => `https://chat.openai.com/?q=${encodeURIComponent(p)}` },
+  Perplexity: { prefill: true, url: (p) => `https://www.perplexity.ai/search?q=${encodeURIComponent(p)}` },
+  Gemini: { prefill: false, url: () => `https://gemini.google.com/` },
   "Claude Sonnet 4.5": { prefill: false, url: () => `https://claude.ai/new` },
   "Cursor AI": { prefill: false, url: () => `https://cursor.sh/` },
   "GitHub Copilot": { prefill: false, url: () => `https://github.com/features/copilot` },
-  "Veo": { prefill: false, url: () => `https://aistudio.google.com/prompts/new_chat` },
-  "Grok": { prefill: false, url: () => `https://x.ai/` },
+  Veo: { prefill: false, url: () => `https://aistudio.google.com/prompts/new_chat` },
+  Grok: { prefill: false, url: () => `https://x.ai/` },
   "DALL·E 3": { prefill: false, url: () => `https://openai.com/dall-e-3` },
-  "Pixlr": { prefill: false, url: () => `https://pixlr.com/` },
+  Pixlr: { prefill: false, url: () => `https://pixlr.com/` },
   "OpenAI Sora": { prefill: false, url: () => `https://openai.com/sora` },
   "Hailuo AI": { prefill: false, url: () => `https://hailuoai.com/` },
 };
@@ -49,7 +47,7 @@ const PromptCard = ({ post, handleEdit, handleDelete, handleTagClick, searchText
   const [isSaved, setIsSaved] = useState(false);
   const [copiedCount, setCopiedCount] = useState(post.copiedCount || 0);
   const [showFullPrompt, setShowFullPrompt] = useState(false);
-  const [tooltip, setTooltip] = useState(""); // tooltip text
+  const [tooltip, setTooltip] = useState("");
 
   useEffect(() => {
     const checkSaved = async () => {
@@ -133,49 +131,51 @@ const PromptCard = ({ post, handleEdit, handleDelete, handleTagClick, searchText
   };
 
   return (
-    <div className="prompt_card p-4 w-96 rounded-xl shadow-md bg-white dark:bg-gray-900 relative">
-      {/* Floating Action Buttons */}
-      <div className="absolute top-4 right-4 flex gap-2 ">
-        {/* Copy */}
+    <div
+      className="prompt_card p-3 sm:p-4 xl:w-full w-44   
+                 rounded-xl shadow-md bg-white dark:bg-gray-900 relative 
+                 transition-transform hover:scale-[1.02]"
+    >
+      {/* Floating Buttons */}
+      <div className="absolute top-3 right-3 flex gap-2">
         <button
           onClick={handleCopy}
-          className="flex items-center justify-center w-9 h-9 rounded-full bg-gray-100 dark:bg-gray-700 hover:scale-110 transition"
+          className="flex items-center justify-center w-7 h-7 sm:w-9 sm:h-9 rounded-full 
+                     bg-gray-100 dark:bg-gray-700 hover:scale-110 transition"
         >
           <Image
             src={copied ? "/assets/icons/tick.svg" : "/assets/icons/copy.svg"}
-            alt={copied ? "tick_icon" : "copy_icon"}
-            width={22}
-            height={22}
+            alt="copy_icon"
+            width={20}
+            height={20}
           />
         </button>
 
-        {/* Save */}
         <button
           onClick={handleSave}
-          className="flex items-center justify-center w-9 h-9 rounded-full bg-gray-300 dark:bg-gray-400 hover:scale-110 transition"
+          className="flex items-center justify-center w-7 h-7 sm:w-9 sm:h-9 rounded-full 
+                     bg-gray-300 dark:bg-gray-400 hover:scale-110 transition"
         >
           <Image
             src={isSaved ? "/assets/icons/saved.svg" : "/assets/icons/save.svg"}
             alt="save_icon"
-            width={22}
-            height={22}
+            width={20}
+            height={20}
           />
         </button>
       </div>
 
-      <div className="mt-9">
+      <div className="mt-10">
         {/* Media */}
         {post.mediaUrl && (
-          <div className="mt-4">
+          <div className="mt-3">
             {post.mediaUrl.endsWith(".mp4") || post.mediaUrl.includes("youtube") ? (
               <video src={post.mediaUrl} controls loop className="w-full rounded-lg" />
             ) : (
               <img
                 src={post.mediaUrl}
                 alt="demo"
-                width={500}
-                height={300}
-                className="w-full rounded-lg object-cover"
+                className="w-full rounded-lg object-cover max-h-48 sm:max-h-full"
               />
             )}
           </div>
@@ -183,14 +183,14 @@ const PromptCard = ({ post, handleEdit, handleDelete, handleTagClick, searchText
 
         {/* Heading */}
         {post.heading && (
-          <h2 className="mt-3 font-satoshi text-lg font-bold text-gray-800 dark:text-white">
+          <h2 className="mt-3 font-satoshi text-sm sm:text-lg font-bold text-gray-800 dark:text-white leading-tight">
             {highlightText(
               showFullPrompt
                 ? post.heading
-                : post.heading.slice(0, 150) + (post.heading.length > 100 ? "..." : ""),
+                : post.heading.slice(0, 50) + (post.heading.length > 50 ? "..." : ""),
               searchText
             )}
-            {post.heading.length > 100 && (
+            {post.heading.length > 50 && (
               <button
                 className="ml-2 text-blue-500 dark:text-blue-300 text-xs underline"
                 onClick={() => setShowFullPrompt(!showFullPrompt)}
@@ -203,14 +203,14 @@ const PromptCard = ({ post, handleEdit, handleDelete, handleTagClick, searchText
 
         {/* Prompt */}
         {post.prompt && (
-          <p className="my-4 font-satoshi text-sm text-gray-700 dark:text-slate-400">
+          <p className="my-2 sm:my-4 font-satoshi text-xs sm:text-sm text-gray-700 dark:text-slate-400 leading-snug">
             {highlightText(
               showFullPrompt
                 ? post.prompt
-                : post.prompt.slice(0, 150) + (post.prompt.length > 150 ? "..." : ""),
+                : post.prompt.slice(0, 30) + (post.prompt.length > 30 ? "..." : ""),
               searchText
             )}
-            {post.prompt.length > 150 && (
+            {post.prompt.length > 30 && (
               <button
                 className="ml-2 text-blue-500 dark:text-blue-300 text-xs underline"
                 onClick={() => setShowFullPrompt(!showFullPrompt)}
@@ -223,35 +223,40 @@ const PromptCard = ({ post, handleEdit, handleDelete, handleTagClick, searchText
 
         {/* Profile */}
         <div
-          className="flex items-center gap-3 cursor-pointer"
+          className="flex items-center gap-2 sm:gap-3 cursor-pointer mt-2"
           onClick={handleProfileClick}
         >
           <Image
             src={post.creator.image}
             alt="user_image"
-            width={40}
-            height={40}
+            width={32}
+            height={32}
             className="rounded-full object-cover"
           />
-          <div className="flex flex-col">
-            <h3 className="font-satoshi font-semibold truncate text-gray-900 dark:text-white">
-              {highlightText(post.creator.username, searchText)}
-            </h3>
-          </div>
+          <div className="flex flex-col max-w-[70%] sm:max-w-[80%] overflow-hidden">
+  <h3
+    className="font-satoshi font-semibold text-xs sm:text-sm 
+               truncate overflow-hidden whitespace-nowrap 
+               text-gray-900 dark:text-white"
+  >
+    {highlightText(post.creator.username, searchText)}
+  </h3>
+</div>
+
         </div>
 
         {/* Copied Count */}
-        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+        <p className="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400 mt-1">
           Used by {copiedCount} {copiedCount === 1 ? "user" : "users"}
         </p>
 
         {/* Categories */}
         {post.categories?.length > 0 && (
-          <div className="mt-2 flex flex-wrap gap-2">
+          <div className="mt-2 flex flex-wrap gap-1 sm:gap-2">
             {post.categories.map((cat, i) => (
               <span
                 key={i}
-                className="px-2 py-1 text-xs rounded-md bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200"
+                className="px-2 py-0.5 sm:py-1 text-[10px] sm:text-xs rounded-md bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200"
               >
                 {highlightText(cat, searchText)}
               </span>
@@ -262,7 +267,7 @@ const PromptCard = ({ post, handleEdit, handleDelete, handleTagClick, searchText
         {/* Tag */}
         {post.tag && (
           <p
-            className="mt-2 font-inter text-sm blue_gradient cursor-pointer"
+            className="mt-1 font-inter text-xs sm:text-sm blue_gradient cursor-pointer"
             onClick={() => handleTagClick?.(post.tag)}
           >
             #{highlightText(post.tag, searchText)}
@@ -270,53 +275,41 @@ const PromptCard = ({ post, handleEdit, handleDelete, handleTagClick, searchText
         )}
 
         {/* Platforms */}
-   {post.platforms?.length > 0 && (
-  <div className="mt-2 flex flex-wrap gap-2">
-    {post.platforms.map((plat, i) => {
-      const platformData = platformUrls[plat];
-      const needsManual = platformData && !platformData.prefill;
+        {post.platforms?.length > 0 && (
+          <div className="mt-2 flex flex-wrap gap-2">
+            {post.platforms.map((plat, i) => {
+              const platformData = platformUrls[plat];
+              const needsManual = platformData && !platformData.prefill;
 
-      return (
-        <button
-          key={i}
-          onClick={() => handlePlatformClick(plat)}
-          className="relative px-2 py-1 text-xs rounded-md z-40
-                     bg-green-100 dark:bg-green-800 
-                     text-green-700 dark:text-green-200 
-                     hover:scale-105 transition mb-4"
-        >
-          <span className="relative group">
-            {highlightText(plat, searchText)}
-
-            {/* Tooltip only on text hover */}
-            {needsManual ? (
-              <span
-                className="absolute -top-8 left-1/2 -translate-x-1/2
-                           px-2 py-1 text-[10px] rounded z-50
-                           bg-gray-800 text-white whitespace-nowrap shadow-md
-                           opacity-0 group-hover:opacity-100 transition-opacity"
-              >
-                Will copy, then paste manually
-              </span>
-            ):(<span
-                className="absolute -top-8 left-1/2 -translate-x-1/2
-                           px-2 py-1 text-[10px] rounded z-50
-                           bg-gray-800 text-white whitespace-nowrap shadow-md
-                           opacity-0 group-hover:opacity-100 transition-opacity"
-              >
-               Click me
-              </span>)}
-          </span>
-        </button>
-      );
-    })}
-  </div>
-)}
-
+              return (
+                <button
+                  key={i}
+                  onClick={() => handlePlatformClick(plat)}
+                  className="relative px-2 py-0.5 sm:py-1 text-[10px] sm:text-xs rounded-md z-40
+                            bg-green-100 dark:bg-green-800 
+                            text-green-700 dark:text-green-200 
+                            hover:scale-105 transition"
+                >
+                  <span className="relative group">
+                    {highlightText(plat, searchText)}
+                    <span
+                      className="absolute -top-7 left-1/2 -translate-x-1/2
+                                 px-2 py-1 text-[9px] sm:text-[10px] rounded z-50
+                                 bg-gray-800 text-white whitespace-nowrap shadow-md
+                                 opacity-0 group-hover:opacity-100 transition-opacity"
+                    >
+                      {needsManual ? "Copy & paste manually" : "Click to open"}
+                    </span>
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        )}
 
         {/* Timestamp */}
         {post.createdAt && (
-          <p className="mt-3 text-xs text-gray-400 dark:text-gray-500">
+          <p className="mt-2 text-[10px] sm:text-xs text-gray-400 dark:text-gray-500">
             {new Date(post.createdAt).toLocaleString()}
           </p>
         )}
@@ -324,15 +317,15 @@ const PromptCard = ({ post, handleEdit, handleDelete, handleTagClick, searchText
 
       {/* Edit/Delete */}
       {session?.user.id === post.creator._id && pathName === "/profile" && (
-        <div className="mt-5 flex gap-4 border-t border-gray-100 dark:border-gray-700 pt-3">
+        <div className="mt-4 sm:mt-5 flex gap-3 border-t border-gray-100 dark:border-gray-700 pt-2 sm:pt-3">
           <p
-            className="font-inter text-sm green_gradient cursor-pointer"
+            className="font-inter text-xs sm:text-sm green_gradient cursor-pointer"
             onClick={() => handleEdit?.(post)}
           >
             Edit
           </p>
           <p
-            className="font-inter text-sm orange_gradient cursor-pointer"
+            className="font-inter text-xs sm:text-sm orange_gradient cursor-pointer"
             onClick={() => handleDelete?.(post)}
           >
             Delete
